@@ -1,0 +1,114 @@
+Var config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y:0 },
+            debug: false
+        }
+    },
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    
+};
+ const game = new Phaser.Game(config);
+
+ function preload() {
+    this.load.image('background', 'assets/city_background.png');
+    this.load.image('player','assets/player.png');
+    this.laod.image('rcycle', 'assets/recycle.png');
+    this.load.image('trash', 'assets/trash.png');
+ }
+ let player;
+ let recyclables;
+ let trashItems;
+ let score = 0;
+ let scoreText;
+
+ function create() {
+    this.add.image(400,500, 'background');
+
+    player = this.physics.add.sprite(400,500, 'player');
+    player.setCollideWorldBounds(true);
+
+    //Create recyclables
+    recyclables = this.physics.add.group({
+        key: 'recycle' ,
+        repeat: 5,
+        setXY: { x: 12, y: 0, stepX: 140}
+    });
+
+    //Create trash trashItems
+    trashItems = this.physics.add.group({
+        key: 'trash',
+        repeat:5,
+        setXY: { x:100, y:0, stepX: 200}
+    });
+
+    //set random positions for trash
+    trashItems.children.interate((child) => {
+        child.setY(Phaser. Math.Between(100, 500));
+    });
+
+    repeat: 5,
+    setXY: { x: 100,y: 0,stepX: 200}
+ });
+
+ //set random positions for trash
+ trashItems. Children.iterate(child) => {
+    child.setY(Phaser.Math.Between(100,500));
+ });
+
+ scoreText = this.add.text(16, 16, 'Score: 0',{ fontSize: '32px', fill:'#fff'});
+
+ this.physics.add.overlap(player, recyclables, collectRecycle, null, this);
+ this.physics.add.overlap(player, trashItems, hitTrash, null, this);
+ }
+
+ function update() {
+    const cursors = this.input.keyboard.createCursorKeys():
+
+    if(cursor.left.isDown) {
+        player.setVelocityX(-160);
+    } else if( cursors.right.is Down) {
+        player.setVelocityX(160);
+    } else {
+        player.setVelocityX(0);
+    }
+ }
+ function collectRecycle(Player,recycle) {
+    recycle.disableBody(true, true);
+    score +=10;//Increase score
+    scoreText.setText('Score: ' + score);
+    player.setVelocityX(-160);
+ } else if (cursors.right.isDown) {
+    player.setVelocityX(160);   
+ } else {
+    player.setVelocityx(0);
+ }
+ 
+ }
+ function collectRecycle(player, recycle) {
+    recycle.disableBody(true, true);
+    score +=10; //Increase Score
+    scoreText.setText( 'score:' +score);
+    //optionally,display educational tips
+ }
+ function hitTrash(player, trash) {
+    // Reduce score or end game
+    score -= 5;
+    scoreText.setText('score:' + score);
+    trash.disableBody(true, true);
+
+ }
+ 
+
+ 
+ 
+    
+ 
